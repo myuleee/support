@@ -155,7 +155,6 @@ async def handle_inline_buttons(update: Update, context: ContextTypes.DEFAULT_TY
     elif query.data == "back_to_optimization":
         keyboard = [
             [InlineKeyboardButton("Настройки Radeon Software", callback_data="settings_rs")],
-            [InlineKeyboardButton("Видеокарта", callback_data="video_card")],
             [InlineKeyboardButton("Дисплей", callback_data="display_place")],
             [InlineKeyboardButton("🔙 Возврат в главное меню", callback_data="main_menu")]
         ]
