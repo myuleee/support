@@ -1,4 +1,3 @@
-import sqlite3
 import logging
 from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import (
@@ -77,7 +76,15 @@ async def handle_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Выберите нужный вам пункт:", reply_markup=reply_markup)
 
     elif text == "🎮 Драйверы GPU":
-        await update.message.reply_text("Раздел 'Драйверы GPU' в разработке...")
+        keyboard = [
+            [InlineKeyboardButton("🤖 Последние версии", callback_data="last_version")],
+            [InlineKeyboardButton("🛠 Ссылки для скачивания", callback_data="link_save")],
+            [InlineKeyboardButton("✅ Рекомендации", callback_data="rec_data")],
+            [InlineKeyboardButton("📋 Что нового в последних драйверах", callback_data="last_driver")],
+            [InlineKeyboardButton("🔙 Возврат в меню", callback_data="main_menu")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text("Выберите нужный вам пункт:", reply_markup=reply_markup)
 
     elif text == "💻 Драйверы CPU":
         await update.message.reply_text("Раздел 'Драйверы CPU' в разработке...")
@@ -254,7 +261,7 @@ async def handle_inline_buttons(update: Update, context: ContextTypes.DEFAULT_TY
                     'Ryzen + Radeon, позволяющая процессору видеть\n'
                     'всю память видеокарты сразу, что дает прирост FPS (обычно 5-15%).Включается в BIOS как "Re-size BAR".\n'
                     '• FidelityFX Super Resolution (FSR):Технология повышения FPS от AMD (работает на любых видеокартах, даже Nvidia).\n'
-                    'Игра рендерится в низком разрешении, а ИИ апскейлит картинку.\n')
+                    'Игра рендерится в низком разрешении, а ИИ апскейлит картинку.')
 
         await query.message.edit_text(amd_text)
         keyboard = [[InlineKeyboardButton("🔙 Назад к Разделам", callback_data="back_to_razdel")]]
@@ -314,7 +321,7 @@ async def handle_inline_buttons(update: Update, context: ContextTypes.DEFAULT_TY
                     '6. Для чистой установки отметь галочку Factory Reset (Сброс к заводским)\n'
                     'это удалит старые версии и перезагрузит ПК.\n'
                     '7. Нажми Установить и дождись завершения. Экран может пару раз мигнуть — это нормально.\n'
-                    '8. По окончании перезагрузи компьютер, если потребуется\n')
+                    '8. По окончании перезагрузи компьютер, если потребуется.')
 
         await query.message.edit_text(rych_text)
         keyboard = [[InlineKeyboardButton("🔙 Назад к инструкциям", callback_data="back_to_instruction")]]
@@ -334,7 +341,7 @@ async def handle_inline_buttons(update: Update, context: ContextTypes.DEFAULT_TY
                         '4. Утилита предложит перезагрузиться в безопасном режиме — согласись (Да).\n'
                         '5. В безопасном режиме она удалит все следы старых драйверов AMD.\n'
                         '6. После завершения компьютер снова перезагрузится.\n'
-                        'Теперь можно устанавливать свежий драйвер способом 1 или 2.\n')
+                        'Теперь можно устанавливать свежий драйвер способом 1 или 2.')
 
         await query.message.edit_text(clean_text)
         keyboard = [[InlineKeyboardButton("🔙 Назад к инструкциям", callback_data="back_to_instruction")]]
@@ -347,6 +354,129 @@ async def handle_inline_buttons(update: Update, context: ContextTypes.DEFAULT_TY
             [InlineKeyboardButton("Автоматическая установка", callback_data="auto_setup")],
             [InlineKeyboardButton("Ручная установка", callback_data="rych_setup")],
             [InlineKeyboardButton("Чистая установка", callback_data="clean_setup")],
+            [InlineKeyboardButton("🔙 Возврат в меню", callback_data="main_menu")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.message.reply_text("Выберите нужный вам пункт:", reply_markup=reply_markup)
+
+
+    if query.data == "last_version":
+        last_text = ('⚡ Последние Актуальные версии:\n'
+                    'Adrenalin 26.3.1 Preview (март 2026, бета)\n'
+                    'Adrenalin 26.2.2 WHQL (18 февраля 2026)\n'
+                    'Adrenalin 26.2.1 WHQL (11 февраля 2026)\n'
+                    'Adrenalin 26.1.1 WHQL (21 января 2026)\n\n'
+                    '📋 Предыдущие стабильные:\n'
+                    'Adrenalin 25.12.1 WHQL (декабрь 2025)\n'
+                    'Adrenalin 25.10.2 WHQL (октябрь 2025)\n'
+                    'Adrenalin 25.9.2 WHQL (сентябрь 2025)\n'
+                    'Adrenalin 25.9.1 WHQL (сентябрь 2025)\n'
+                    'Adrenalin 25.8.1 WHQL (август 2025)')
+
+        await query.message.edit_text(last_text)
+        keyboard = [[InlineKeyboardButton("🔙 Назад к разделу", callback_data="back_to_driversGPU")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.message.reply_text("Выберите действие:", reply_markup=reply_markup)
+
+
+    if query.data == "link_save":
+        link_text = ('📌 Официальный сайт AMD:\n'
+                    '🔗 Центр загрузки AMD (https://www.amd.com/ru/support)\n\n'
+                    '✅ *Последний драйвер для 9000 серии:*\n'
+                    'https://www.amd.com/en/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-9000-series.html\n'
+                    '✅ *Последний драйвер для 7000 серии:*\n'
+                    'https://www.amd.com/en/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-7000-series.html\n'
+                    '✅ *Последний драйвер для 6000 серии:*\n'
+                    'https://www.amd.com/en/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-6000-series.html\n'
+                    '✅ *Последний драйвер для 5000 серии:*\n'
+                    'https://www.amd.com/en/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-5000-series.html\n\n'
+                    '⚠️ Важно: Всегда скачивайте драйверы только с официального сайта AMD!')
+
+        await query.message.edit_text(link_text)
+        keyboard = [[InlineKeyboardButton("🔙 Назад к разделу", callback_data="back_to_driversGPU")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.message.reply_text("Выберите действие:", reply_markup=reply_markup)
+
+    if query.data == "rec_data":
+        rec_text = ('Рекомендации по драйверам AMD\n\n'
+                    '⭐ Лучший выбор:\n'
+                    'Adrenalin 26.2.2 (WHQL)\n'
+                    '  • Самая стабильная версия на данный момент\n'
+                    '  • Полная поддержка всех новых игр\n'
+                    '  • Работает на RX 9000/8000/7000 сериях\n\n'
+                    '🎮 Для игр:\n'
+                    'Adrenalin 26.2.2 + HYPR-RX 2.0\n'
+                    '   • Включайте HYPR-RX в играх одной кнопкой\n'
+                    '   • AFMF 3 дает +30-50% FPS\n'
+                    '   • FSR 4.0 в поддерживаемых играх\n\n'
+                    '💻 Для работы:\n'
+                    'Adrenalin 25.12.1\n'
+                    '   • Максимальная стабильность\n'
+                    '   • Минимум ошибок в профессиональном ПО\n'
+                    '   • Проверено временем\n\n'
+                    'Лучше поставить постарее драйвер, чем новый\n'
+                    'Старый драйвер (3+ месяца) уже протестирован тысячами пользователей, все критические баги найдены и исправлены, работают без сбоев.\n\n'
+                    '💡 Главные советы:\n'
+                    '✅ Всегда ставьте WHQL версии для стабильности\n'
+                    '🧹 Используйте DDU или AMD Cleanup Utility для чистой установки\n'
+                    '💾 Делайте точку восстановления перед обновлением\n'
+                    '🔄 Не гонитесь за "свежестью", если всё работает\n'
+                    '📌 Preview версии только для тестирования')
+
+        await query.message.edit_text(rec_text)
+        keyboard = [[InlineKeyboardButton("🔙 Назад к разделу", callback_data="back_to_driversGPU")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.message.reply_text("Выберите действие:", reply_markup=reply_markup)
+
+    if query.data == "last_driver":
+        lstdrive_text = ('🚀 Adrenalin 26.3.1 (Март 2026, бета)\n'
+                        'Новые функции:\n'
+                        '   • AMD FSR 4 — новая ИИ-масштабизация для RX 9070 серии\n'
+                        '   • AFMF 2.1 — улучшенная генерация кадров с меньшим гостингом\n'
+                        '   • AMD Chat — локальный ИИ-чат с генерацией текста и изображений\n'
+                        '   • AMD Install Manager — автообновление драйверов\n'
+                        '   • ROCm на WSL 2 — официальная поддержка для RX 7000\n\n'
+                        '⚡ Adrenalin 26.2.2 (Февраль 2026, WHQL)\n'
+                        'Поддержка новых игр:\n'
+                        '   • Resident Evil Requiem\n'
+                        '   • Marathon\n'
+                        'Исправлено:\n'
+                        '   • Вылеты в Roblox Player на RX 7000 при переключении задач\n'
+                        '   • Мерцание текстур при Instant Replay на RX 7000\n\n'
+                        '⚡ Adrenalin 26.2.1 (Февраль 2026, WHQL)\n'
+                        'Поддержка новых игр:\n'
+                        '   • Yakuza Kiwami 3 & Dark Ties\n'
+                        '   • Nioh 3\n'
+                        'Исправлено:\n'
+                        '   • Искаженные облака в Arc Raiders на RX 9000\n'
+                        '   • Вылеты в The Finals с RT на RX 7000\n\n'
+                        '⚡ Adrenalin 26.1.1 (Январь 2026, WHQL)\n'
+                        'Новые функции:\n'
+                        '   • Опциональный AI Bundle (набор ИИ-инструментов)\n'
+                        'Поддержка новых игр:\n'
+                        '   • Starsand Island\n'
+                        '   • Avatar: Frontiers of Pandora - From the Ashes Edition\n'                   
+                        'Исправлено:\n'
+                        '   • Тени в Call of Duty: Black Ops 7 на RX 5000/6000\n'
+                        '   • Текстуры в Enshrouded на RX 7000/9000\n'
+                        '   • Вылеты в Diablo 4 с нелатинскими символами\n'
+                        '   • Ночные сцены в MSFS 2024 на RX 9000\n'
+                        '   • Сбои Unreal Engine 5.6 с Lumen HWRT\n'
+                        '   • Артефакты в Chromium/Electron приложениях\n'
+                        '   • Артефакты TAA в Baldurs Gate 3')
+
+        await query.message.edit_text(lstdrive_text)
+        keyboard = [[InlineKeyboardButton("🔙 Назад к разделу", callback_data="back_to_driversGPU")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.message.reply_text("Выберите действие:", reply_markup=reply_markup)
+
+
+    elif query.data == "back_to_driversGPU":
+        keyboard =[
+            [InlineKeyboardButton("🤖 Последние версии", callback_data="last_version")],
+            [InlineKeyboardButton("🛠 Ссылки для скачивания", callback_data="link_save")],
+            [InlineKeyboardButton("✅ Рекомендации", callback_data="rec_data")],
+            [InlineKeyboardButton("📋 Что нового в последних драйверах", callback_data="last_driver")],
             [InlineKeyboardButton("🔙 Возврат в меню", callback_data="main_menu")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -379,4 +509,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
